@@ -46,6 +46,7 @@ string GamePhrases::getPhrase()
 		phrases[count] = temp;
 		count++;
 	}
+	_infile.close();
 	phrase = phrases[x];
 	cout << "x = " << x << endl;
 	cout << "phrase: " << phrase << endl;

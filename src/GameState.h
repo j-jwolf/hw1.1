@@ -16,9 +16,9 @@ using namespace std;
 class GameState
 {
 private:
-	int _wIndex, _roundWin, _activePlayer, _lines, _remaining, _spinVal;
+	int _wIndex, _roundWin, _activePlayer, _lines, _remaining;
 	string _p1, _p2, _phrase, _visPhrase, _fn;
-	vector<string> _incorrect;
+	vector<char> _incorrect;
 	ifstream _infile;
 public:
 	GameState(){}
