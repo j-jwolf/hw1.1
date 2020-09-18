@@ -1,7 +1,7 @@
 //============================================================================
 // Name        : John Wolf
 // Project     : HW1 -- Wheel of Fortune
-// Professor   : Dr. St.Clair
+// Professor   : Dr.St.Clair
 // Class       : CSCE 306
 // Description : Uses classes GamePhrases and GameState to run a game
 //============================================================================
@@ -24,107 +24,108 @@ using namespace std;
  *
  * You uploaded the .txt files you used for testing to the git hub repository. Make sure you delete/don't do that again, idiot
  *
+ * The printing is really sloppy, it needs to get fixed asap
+ *
+ * To fix:
+ * -The container in game phrases can't be an array, they need to be pointers and we can't use those, went with original idea to use a vector instead
+ * 	--This is also true for game states prizes
+ * 	 --FIXED
+ * -The print lines in run game, they're sloppy and aren't as easy as they should be to follow
+ * 	--
+ * -Add a check in run game to see if the entries are letters
+ * 	--
+ *
+ * -Fix prints after deciding to exit when prompted for settings
+ * 	--
+ *
  * =======================================================================================================================================================
  */
 
 int main()
 {
-	/*
-	 * Variable initialization
-	 */
-	string player1, player2, phraseFile, prizeFile, input;
-	int p1winnings, p2winnings, phraseCount, prizeCount;
+	//=============== To hard code game settings such as file names, lines read from each file, and player names, you may change these values=============
+	/*1*/ string phraseFile = "";
+	/*2*/ int phraseCount = 0;
+	/*3*/ string prizeFile = "";
+	/*4*/ int prizeCount = 0;
+	/*5*/ string player1 = "";
+	/*6*/ string player2 = "";
+	//====================================================================================================================================================
 
-	/*
-	 * Welcome screen
-	 */
+	string input = "";
 	cout << "Welcome to a Wheel of Fortune game by John Wolf. At any prompt for input, you may enter '0' to exit the game" << endl;
 	cout << "==============================================================" << endl;
-	input = ""; int count = 0;
 
-	/*
-	 * This loop is to get all of the information that both GamePhrases and GameState will use, such as file names and lines to be read as well as player
-	 * names. It is controlled by a sentinel value of 0, which is the same value as the main loop below
-	 *
-	 * !!! Make sure this is not commented out for the final version !!!
-	 *
-	 */
 
-	/*while(input != "0" && count < 7)
+
+	//============================== This block is to get any left over variables that were not hard coded above ========================================
+	if(phraseFile == "")
 	{
-		if(input == "0") {cout << "Exiting";}
-		if(count >= 5) {cout << "Enter the ";}
-		if(count == 0) {cout << "txt file phrases will";}
-		else if(count == 1)
-		{
-			phraseFile = input;
-			cout << "number of lines from " << phraseFile << "to be";
-		}
-		else if(count == 2)
-		{
-			phraseCount = stoi(input);
-			cout << "txt file prizes will";
-		}
-		else if(count == 3)
-		{
-			prizeFile = input;
-			cout << "number of lines from " << prizeFile << "to be";
-		}
-		else if(count == 4)
-		{
-			prizeCount = stoi(input);
-			cout << "name of player 1: " << endl;
-		}
-		else if(count == 5)
-		{
-			player1 = input;
-			cout << "name of player 2" << endl;
-		}
-		else if(count == 6) {player2 = input;}
-		if(count < 6)
-		{
-			if(count < 4) {cout << " be read from: " << endl;}
-			cin >> input;
-		}
-		count++;
-	}*/
+		cout << "Enter the phrase file name: " << endl;
+		cin >> input;
+		phraseFile = input;
+	}
+	if(input != "0" && phraseCount == 0)
+	{
+		cout << "Enter the number of lines to read from " << phraseFile << ":" << endl;
+		cin >> input;
+		phraseCount = stoi(input);
+	}
+	if(input != "0" && prizeFile == "")
+	{
+		cout << "Enter the prize file name: " << endl;
+		cin >> input;
+		prizeFile = input;
+	}
+	if(input != "0" && prizeCount == 0)
+	{
+		cout << "Enter the number of lines to read from " << prizeFile << ":" << endl;
+		cin >> input;
+		prizeCount = stoi(input);
+	}
+	if(input != "0" && player1 == "")
+	{
+		cout << "Enter player 1's name:" << endl;
+		cin >> input;
+		player1 = input;
+	}
+	if(input != "0" && player2 == "")
+	{
+		cout << "Enter player 2's name:" << endl;
+		cin >> input;
+		player2 = input;
+	}
+	//====================================================================================================================================================
 
-	/*
-	 * This is for testing purposes, delete this before turning in
-	 */
-	phraseFile = "data.txt";
-	phraseCount = 10;
-	prizeFile = "prize.txt";
-	prizeCount = 5;
-	player1 = "p1";
-	player2 = "p2";
+
+
+	int p1winnings, p2winnings;
 	if(input != "0")
 	{
 		GamePhrases phrases(phraseFile, phraseCount);
 		p1winnings = p2winnings = 0;
 		int winner, prize;
-		string sent = "";
 		/*
 		 * Loop that runs each instance of GameState. The loop is skipped if the user decides to enter a 0 for any entry above. Once inside the loop,
 		 * it is controlled by a sentinel value that is returned from the runGame method in GameState
 		 */
-		while(sent != "0")
+		while(input != "0")
 		{
 			GameState game(phrases.getPhrase(), prizeFile, prizeCount, player1, player2);
-			sent = game.runGame();
+			input = game.runGame();
 			winner = game.getWinnerIndex();
 			prize = game.getRoundPrize();
 			if(prize < 0) {prize = 0;}
 			if(winner == 0) {p1winnings += prize;}
 			else {p2winnings += prize;}
 		}
+		cout << player1 << " won $" << p1winnings << " in total" << endl;
+		cout << player2 << " won $" << p2winnings << " in total" << endl;
+		cout << "Goodbye!" << endl;
 	}
-	cout << player1 << " won $" << p1winnings << "in total" << endl;
-	cout << player2 << " won $" << p2winnings << "in total" << endl;
-	cout << "Goodbye!" << endl;
+	else {cout << "Exiting" << endl;}
 	return 0;
 }
-
 
 
 

@@ -19,17 +19,17 @@ private:
 	int _wIndex, _roundWin, _activePlayer, _lines, _remaining;
 	string _p1, _p2, _phrase, _visPhrase, _fn;
 	vector<char> _incorrect;
+	vector<int> _prizes;
 	ifstream _infile;
+	void readPrizes();
 public:
 	GameState(){}
 	GameState(string, string, int, string, string);
 	void setPlayers(string, string);
-	void test_showPhrase();
-	void test_completePhrase();
-	int getWinnerIndex() {return _wIndex;}
-	int getRoundPrize() {return _roundWin;}
-	int spinWheel();
-	string runGame();
+	int const getWinnerIndex() {return _wIndex;}
+	int const getRoundPrize() {return _roundWin;}
+	int const spinWheel();
+	string const runGame();
 };
 
 #endif /* GAMESTATE_H_ */

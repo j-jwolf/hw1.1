@@ -10,7 +10,6 @@
 #include <string>
 #include <fstream>
 #include <ctime>
-#include <iostream> // delete before turning in, this is for testing only
 using namespace std;
 
 /**
@@ -23,33 +22,41 @@ using namespace std;
  */
 GamePhrases::GamePhrases(string fileName, int lineCount)
 {
+	srand(time(0));
 	_fn = fileName;
 	_infile.open(fileName);
 	if(!_infile) {exit(-1);}
 	_infile.close();
 	_lines = lineCount;
+	readPhrases();
 }
 /**
- * Gets a phrase from a random line in the given file
+ * Reads the phrases from filename and stores them in vector _phrases
  *
- * @return phrase to be used for GameState
+ * @return null
  */
-string GamePhrases::getPhrase()
+void GamePhrases::readPhrases()
 {
 	_infile.open(_fn);
-	string temp, phrase, phrases[_lines];
-	srand(time(0));
-	int count = 0, x = rand()%_lines;
-	while(count < _lines && _infile)
+	string temp, phrase;
+	int count = 0;
+	while(count < _lines && !_infile.eof())
 	{
 		getline(_infile, temp);
-		phrases[count] = temp;
+		_phrases.push_back(temp);
 		count++;
 	}
 	_infile.close();
-	phrase = phrases[x];
-	cout << "x = " << x << endl;
-	cout << "phrase: " << phrase << endl;
+}
+/*
+ * Returns a phrase from a random index in _phrases
+ *
+ * @return phrase to be used by game state
+ */
+string GamePhrases::getPhrase()
+{
+	int index;
+	index = rand()%(_lines-1);
+	string phrase = _phrases[index];
 	return phrase;
 }
-
